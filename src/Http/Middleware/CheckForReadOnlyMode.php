@@ -10,7 +10,6 @@ use Illuminate\Http\Response;
  */
 class CheckForReadOnlyMode
 {
-
     /**
      * @param $request
      * @param  Closure  $next
