@@ -22,7 +22,7 @@ build:
         coverage:
             tests:
                 override:
-                    - command: ./run-my-tests
+                    - command: ./vendor/bin/phpunit
                       coverage:
-                          file: build/logs/clover.xml
+                          file: ./build/logs/clover.xml
                           format: clover
