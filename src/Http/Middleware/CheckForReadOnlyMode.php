@@ -20,13 +20,10 @@ class CheckForReadOnlyMode
     {
         if (config('lockout.enabled')) {
             foreach (config('lockout.locked_types', []) as $type) {
-                // This method is to be blocked
-                if ($request->isMethod(strtolower($type))) {
-                    if (strtolower($type) === 'post' && config('lockout.allow_login')) {
-                        abort_if($request->path() !== config('lockout.login_path') && $request->path() !== config('lockout.logout_path'), Response::HTTP_UNAUTHORIZED);
-                    } else {
-                        abort(Response::HTTP_UNAUTHORIZED);
-                    }
+                if ($request->isMethod('post') && config('lockout.allow_login')) {
+                    abort_if($request->path() !== config('lockout.login_path') && $request->path() !== config('lockout.logout_path'), Response::HTTP_UNAUTHORIZED);
+                } else if ($request->isMethod(strtolower($type))) {
+                    abort(Response::HTTP_UNAUTHORIZED);
                 }
             }
 
