@@ -6,13 +6,10 @@ use Illuminate\Support\Facades\Artisan;
 use Rappasoft\Lockout\LockoutServiceProvider;
 
 /**
- * Class LockoutTest
- *
- * @package Rappasoft\Lockout\Tests
+ * Class LockoutTest.
  */
 class TestCase extends \Orchestra\Testbench\TestCase
 {
-
     /**
      * @param  \Illuminate\Foundation\Application  $app
      *
