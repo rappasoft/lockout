@@ -2,19 +2,16 @@
 
 namespace Rappasoft\Lockout;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Http\Kernel;
 use Rappasoft\Lockout\Http\Middleware\CheckForReadOnlyMode;
 
 /**
- * Class LockoutServiceProvider
- *
- * @package Rappasoft\Lockout
+ * Class LockoutServiceProvider.
  */
 class LockoutServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application services.
      */
@@ -43,10 +40,8 @@ class LockoutServiceProvider extends ServiceProvider
             ->pushMiddleware(CheckForReadOnlyMode::class);
     }
 
-    /**
-     *
-     */
-    protected function registerBladeExtensions() {
+    protected function registerBladeExtensions()
+    {
         /*
          * The block of code inside this directive indicates
          * the project is currently running in read only mode.

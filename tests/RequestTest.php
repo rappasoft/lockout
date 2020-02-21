@@ -5,15 +5,13 @@ namespace Rappasoft\Lockout\Tests;
 use Illuminate\Http\Response;
 
 /**
- * Class RequestTest
- *
- * @package Rappasoft\Lockout\Tests
+ * Class RequestTest.
  */
 class RequestTest extends TestCase
 {
-
     /** @test */
-    public function get_requests_can_be_accessed_with_the_plugin_off() {
+    public function get_requests_can_be_accessed_with_the_plugin_off()
+    {
         config(['lockout.enabled' => false]);
 
         $crawler = $this->call('GET', 'get')
@@ -23,7 +21,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function get_requests_cannot_be_accessed_with_the_plugin_on() {
+    public function get_requests_cannot_be_accessed_with_the_plugin_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['get']]);
 
@@ -32,7 +31,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function post_requests_can_be_accessed_with_the_plugin_off() {
+    public function post_requests_can_be_accessed_with_the_plugin_off()
+    {
         config(['lockout.enabled' => false]);
 
         $crawler = $this->call('POST', 'post')
@@ -42,7 +42,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function post_requests_cannot_be_accessed_with_the_plugin_on() {
+    public function post_requests_cannot_be_accessed_with_the_plugin_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['post']]);
 
@@ -51,7 +52,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function put_requests_can_be_accessed_with_the_plugin_off() {
+    public function put_requests_can_be_accessed_with_the_plugin_off()
+    {
         config(['lockout.enabled' => false]);
 
         $crawler = $this->call('PUT', 'put')
@@ -61,7 +63,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function put_requests_cannot_be_accessed_with_the_plugin_on() {
+    public function put_requests_cannot_be_accessed_with_the_plugin_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['put']]);
 
@@ -70,7 +73,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function patch_requests_can_be_accessed_with_the_plugin_off() {
+    public function patch_requests_can_be_accessed_with_the_plugin_off()
+    {
         config(['lockout.enabled' => false]);
 
         $crawler = $this->call('PATCH', 'patch')
@@ -80,7 +84,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function patch_requests_cannot_be_accessed_with_the_plugin_on() {
+    public function patch_requests_cannot_be_accessed_with_the_plugin_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['patch']]);
 
@@ -89,7 +94,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function delete_requests_can_be_accessed_with_the_plugin_off() {
+    public function delete_requests_can_be_accessed_with_the_plugin_off()
+    {
         config(['lockout.enabled' => false]);
 
         $crawler = $this->call('DELETE', 'delete')
@@ -99,7 +105,8 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function deleted_requests_cannot_be_accessed_with_the_plugin_on() {
+    public function deleted_requests_cannot_be_accessed_with_the_plugin_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['delete']]);
 
@@ -107,7 +114,8 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    public function test_user_can_login_and_logout_with_override_on() {
+    public function test_user_can_login_and_logout_with_override_on()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.allow_login' => true]);
         config(['lockout.locked_types' => ['post']]);
@@ -123,7 +131,8 @@ class RequestTest extends TestCase
         $this->assertEquals('logged out', $crawler->getContent());
     }
 
-    public function test_lock_certain_get_pages() {
+    public function test_lock_certain_get_pages()
+    {
         config(['lockout.enabled' => true]);
         config(['lockout.pages' => 'get']);
         config(['lockout.locked_types' => []]);
