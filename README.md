@@ -17,6 +17,13 @@ You can install the package via composer:
 composer require rappasoft/lockout
 ```
 
+## Version Compatibility
+
+ Laravel  | Lockout
+:---------|:----------
+ 6.x      | 1.x
+ 7.x      | 2.x
+
 ## Publish
 
 You can publish the configuration file to override the defaults:
