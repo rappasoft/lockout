@@ -74,6 +74,16 @@ You may conditionally render views based on the status of the lockout with this 
 @endreadonly
 ```
 
+#### Whitelisting Pages
+
+You may whitelist certain paths for certain methods. I.e. part of your application is behind the password.confirm middleware and you want the demo user to be able to access it.
+
+```
+'whitelist' => [
+    'post' => '/password/confirm',
+],
+```
+
 ### Testing
 
 ``` bash

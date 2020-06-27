@@ -18,6 +18,13 @@ class CheckForReadOnlyMode
      */
     public function handle($request, Closure $next)
     {
+        // Check to see if this method and path is whitelisted
+        foreach (config('lockout.whitelist') as $method => $path) {
+            if ($request->isMethod($method) && $request->path() === $path) {
+                return $next($request);
+            }
+        }
+
         if (config('lockout.enabled')) {
             foreach (config('lockout.locked_types', []) as $type) {
                 if ($request->isMethod('post') && config('lockout.allow_login')) {
