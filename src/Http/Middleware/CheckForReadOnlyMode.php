@@ -25,7 +25,7 @@ class CheckForReadOnlyMode
                     return $next($request);
                 }
             }
-            
+
             foreach (config('lockout.locked_types', []) as $type) {
                 if ($request->isMethod('post') && config('lockout.allow_login')) {
                     abort_if($request->path() !== config('lockout.login_path') && $request->path() !== config('lockout.logout_path'), Response::HTTP_UNAUTHORIZED);
