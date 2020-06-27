@@ -145,14 +145,14 @@ class RequestTest extends TestCase
     {
         config(['lockout.enabled' => true]);
         config(['lockout.whitelist' => [
-            'post' => 'password/confirm'
+            'post' => 'password/confirm',
         ]]);
 
         $this->call('POST', 'password/confirm')
             ->assertStatus(Response::HTTP_OK);
 
         config(['lockout.whitelist' => [
-            'post' => 'password/confirm/123'
+            'post' => 'password/confirm/123',
         ]]);
 
         $this->call('POST', 'password/confirm')
