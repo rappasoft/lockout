@@ -43,6 +43,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
             return 'logged out';
         }]);
 
+        $app['router']->post('password/confirm', ['uses' => function () {
+            return 'password confirmed';
+        }]);
+
         $app['router']->put('put', ['uses' => function () {
             return 'placed';
         }]);

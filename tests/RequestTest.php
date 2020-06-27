@@ -140,4 +140,22 @@ class RequestTest extends TestCase
         $this->call('GET', 'get')
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
+
+    public function test_a_page_that_is_whitelisted_is_allowed()
+    {
+        config(['lockout.enabled' => true]);
+        config(['lockout.whitelist' => [
+            'post' => 'password/confirm',
+        ]]);
+
+        $this->call('POST', 'password/confirm')
+            ->assertStatus(Response::HTTP_OK);
+
+        config(['lockout.whitelist' => [
+            'post' => 'password/confirm/123',
+        ]]);
+
+        $this->call('POST', 'password/confirm')
+            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
 }
