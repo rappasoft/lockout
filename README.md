@@ -23,6 +23,7 @@ composer require rappasoft/lockout
 :---------|:----------
  6.x      | 1.x
  7.x      | 2.x
+ 8.x      | 3.x
 
 ## Publish
 
