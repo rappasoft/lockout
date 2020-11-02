@@ -1,4 +1,4 @@
-# Put your Laravel application into read-only mode
+![Package Logo](https://banners.beyondco.de/Laravel%20Lockout.png?theme=light&packageName=rappasoft%2Flockout&pattern=hideout&style=style_1&description=Put+your+Laravel+application+into+read-only+mode&md=1&fontSize=100px&images=lock-closed)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/rappasoft/lockout.svg?style=flat-square)](https://packagist.org/packages/rappasoft/lockout)
 ![Run Tests](https://github.com/rappasoft/lockout/workflows/Run%20Tests/badge.svg?branch=master)
