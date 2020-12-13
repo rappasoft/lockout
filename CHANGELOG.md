@@ -4,6 +4,12 @@ All notable changes to `lockout` will be documented in this file
 
 ## [Unreleased]
 
+## [3.0.1] - 2020-12-13
+
+### Changed
+
+- PHP8 Support
+
 ## [3.0.0] - 2020-09-13
 
 ### Changed
@@ -26,7 +32,8 @@ All notable changes to `lockout` will be documented in this file
 
 - Initial release
 
-[Unreleased]: https://github.com/rappasoft/laravel-boilerplate/compare/v3.0.0...develop
+[Unreleased]: https://github.com/rappasoft/laravel-boilerplate/compare/v3.0.1...develop
+[3.0.1]: https://github.com/rappasoft/laravel-boilerplate/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v1.0.1...v2.0.0
 [1.0.1]: https://github.com/rappasoft/laravel-boilerplate/compare/v1.0.0...v1.0.1
