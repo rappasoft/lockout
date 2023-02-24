@@ -7,6 +7,8 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/rappasoft/lockout.svg?style=flat-square)](https://scrutinizer-ci.com/g/rappasoft/lockout)
 [![Total Downloads](https://img.shields.io/packagist/dt/rappasoft/lockout.svg?style=flat-square)](https://packagist.org/packages/rappasoft/lockout)
 
+### Enjoying this package? [Buy me a beer 🍺](https://www.buymeacoffee.com/rappasoft)
+
 A simple .env flag that can place your application into read-only mode. By default only get requests are allowed. You can optionally allow authentication.
 
 ## Installation
