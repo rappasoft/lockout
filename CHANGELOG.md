@@ -4,6 +4,23 @@ All notable changes to `lockout` will be documented in this file
 
 ## [Unreleased]
 
+## [6.0.0] - 2025-01-XX
+
+### Added
+- Laravel 11 and Laravel 12 Support
+- PHP 8.2+ Support
+
+### Fixed
+- Fixed middleware logic bug where allow_login check was inside locked_types loop
+- Fixed method case sensitivity issues in whitelist and locked_types handling
+- Fixed pages array validation to handle non-array values gracefully
+- Improved type hints and code quality
+
+### Changed
+- Updated PHPUnit to v11
+- Updated PHPUnit configuration for PHPUnit 11 compatibility
+- Improved test coverage with 11 additional test cases
+
 ## [5.0.0] - 2023-04-11
 
 ### Added
