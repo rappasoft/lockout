@@ -33,7 +33,7 @@ class IpHelperTest extends TestCase
     public function multiple_ips_in_whitelist_work()
     {
         $whitelist = ['127.0.0.1', '192.168.1.0/24', '10.0.0.1'];
-        
+
         $this->assertTrue(IpHelper::isIpAllowed('127.0.0.1', $whitelist));
         $this->assertTrue(IpHelper::isIpAllowed('192.168.1.50', $whitelist));
         $this->assertTrue(IpHelper::isIpAllowed('10.0.0.1', $whitelist));
@@ -70,7 +70,7 @@ class IpHelperTest extends TestCase
     public function parse_ip_list_from_string()
     {
         $result = IpHelper::parseIpList('127.0.0.1,192.168.1.1,10.0.0.0/8');
-        
+
         $this->assertEquals(['127.0.0.1', '192.168.1.1', '10.0.0.0/8'], $result);
     }
 
@@ -78,7 +78,7 @@ class IpHelperTest extends TestCase
     public function parse_ip_list_handles_spaces()
     {
         $result = IpHelper::parseIpList('127.0.0.1, 192.168.1.1 , 10.0.0.0/8');
-        
+
         $this->assertEquals(['127.0.0.1', '192.168.1.1', '10.0.0.0/8'], $result);
     }
 
@@ -107,10 +107,9 @@ class IpHelperTest extends TestCase
         // /32 should match only exact IP
         $this->assertTrue(IpHelper::isIpAllowed('192.168.1.1', ['192.168.1.1/32']));
         $this->assertFalse(IpHelper::isIpAllowed('192.168.1.2', ['192.168.1.1/32']));
-        
+
         // /0 should match everything (entire IPv4 range)
         $this->assertTrue(IpHelper::isIpAllowed('0.0.0.0', ['0.0.0.0/0']));
         $this->assertTrue(IpHelper::isIpAllowed('255.255.255.255', ['0.0.0.0/0']));
     }
 }
-

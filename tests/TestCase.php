@@ -108,7 +108,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param $view
+     * @param  $view
      * @param  array  $parameters
      * @return string
      */

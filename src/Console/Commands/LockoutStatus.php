@@ -47,4 +47,3 @@ class LockoutStatus extends Command
         return Command::SUCCESS;
     }
 }
-

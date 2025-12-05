@@ -2,8 +2,8 @@
 
 namespace Rappasoft\Lockout\Tests;
 
-use Illuminate\Http\Response;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 
 class RoleBasedTest extends TestCase
 {
@@ -14,7 +14,8 @@ class RoleBasedTest extends TestCase
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.allowed_roles' => ['admin']]);
 
-        $user = new class extends Authenticatable {
+        $user = new class extends Authenticatable
+        {
             public $role = 'admin';
         };
 
@@ -30,7 +31,8 @@ class RoleBasedTest extends TestCase
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.allowed_roles' => ['admin']]);
 
-        $user = new class extends Authenticatable {
+        $user = new class extends Authenticatable
+        {
             public $role = 'user';
         };
 
@@ -46,7 +48,8 @@ class RoleBasedTest extends TestCase
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.allowed_roles' => ['admin']]);
 
-        $user = new class extends Authenticatable {
+        $user = new class extends Authenticatable
+        {
             public function hasRole($role)
             {
                 return $role === 'admin';
@@ -76,15 +79,18 @@ class RoleBasedTest extends TestCase
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.allowed_roles' => ['admin', 'super-admin', 'maintenance']]);
 
-        $admin = new class extends Authenticatable {
+        $admin = new class extends Authenticatable
+        {
             public $role = 'admin';
         };
 
-        $superAdmin = new class extends Authenticatable {
+        $superAdmin = new class extends Authenticatable
+        {
             public $role = 'super-admin';
         };
 
-        $maintenance = new class extends Authenticatable {
+        $maintenance = new class extends Authenticatable
+        {
             public $role = 'maintenance';
         };
 
@@ -108,7 +114,8 @@ class RoleBasedTest extends TestCase
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.allowed_roles' => []]);
 
-        $user = new class extends Authenticatable {
+        $user = new class extends Authenticatable
+        {
             public $role = 'admin';
         };
 
@@ -116,6 +123,4 @@ class RoleBasedTest extends TestCase
             ->call('POST', 'post')
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
-
 }
-

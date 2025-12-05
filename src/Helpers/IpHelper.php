@@ -89,4 +89,3 @@ class IpHelper
         return array_map('trim', explode(',', $ipList));
     }
 }
-

@@ -151,7 +151,7 @@ class EdgeCasesTest extends TestCase
         // Verify custom path config is set and health check is enabled
         $this->assertEquals('custom-health', config('lockout.health_check_path'));
         $this->assertTrue(config('lockout.health_check_enabled'));
-        
+
         // The actual route registration happens at service provider boot
         // In real applications, changing the path would require clearing route cache
         // This test verifies the configuration is properly stored and retrieved
@@ -275,4 +275,3 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 }
-

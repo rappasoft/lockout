@@ -3,11 +3,9 @@
 namespace Rappasoft\Lockout\Tests;
 
 use Illuminate\Http\Response;
-use Rappasoft\Lockout\Events\LockoutDisabled;
-use Rappasoft\Lockout\Events\LockoutEnabled;
-use Rappasoft\Lockout\Events\RequestBlocked;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
+use Rappasoft\Lockout\Events\RequestBlocked;
 
 class AdvancedFeaturesTest extends TestCase
 {
@@ -118,7 +116,7 @@ class AdvancedFeaturesTest extends TestCase
 
         $response = $this->withHeaders(['Accept' => 'application/json'])
             ->call('POST', 'api/test');
-        
+
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
         // Check if response is JSON (might be HTML if API detection fails)
         if ($response->headers->get('Content-Type') === 'application/json') {
@@ -136,7 +134,7 @@ class AdvancedFeaturesTest extends TestCase
 
         // View might not exist in test environment, so test with json instead
         config(['lockout.response_type' => 'json']);
-        
+
         $response = $this->call('POST', 'post');
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
         $response->assertJson(['message' => 'Application is currently in read-only mode.']);
@@ -212,4 +210,3 @@ class AdvancedFeaturesTest extends TestCase
         Event::assertNotDispatched(RequestBlocked::class);
     }
 }
-

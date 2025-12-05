@@ -3,8 +3,8 @@
 namespace Rappasoft\Lockout\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Http\Request;
+use Illuminate\Queue\SerializesModels;
 
 class RequestBlocked
 {
@@ -20,4 +20,3 @@ class RequestBlocked
         //
     }
 }
-
