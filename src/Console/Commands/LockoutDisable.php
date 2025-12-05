@@ -62,4 +62,3 @@ class LockoutDisable extends Command
         return Command::SUCCESS;
     }
 }
-
