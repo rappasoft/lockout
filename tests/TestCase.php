@@ -57,10 +57,58 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $app['router']->delete('delete', ['uses' => function () {
             return 'deleted';
         }]);
+
+        $app['router']->put('update-profile', ['uses' => function () {
+            return 'profile updated';
+        }]);
+
+        $app['router']->get('blocked-page', ['uses' => function () {
+            return 'blocked';
+        }]);
+
+        $app['router']->get('register', ['uses' => function () {
+            return 'register';
+        }]);
+
+        $app['router']->get('subscribe', ['uses' => function () {
+            return 'subscribe';
+        }]);
+
+        $app['router']->post('allowed-post', ['uses' => function () {
+            return 'allowed post';
+        }]);
+
+        $app['router']->put('allowed-put', ['uses' => function () {
+            return 'allowed put';
+        }]);
+
+        $app['router']->post('custom-login', ['uses' => function () {
+            return 'custom logged in';
+        }]);
+
+        $app['router']->post('custom-logout', ['uses' => function () {
+            return 'custom logged out';
+        }]);
+
+        $app['router']->post('other-path', ['uses' => function () {
+            return 'other path';
+        }]);
+
+        $app['router']->get('blocked', ['uses' => function () {
+            return 'blocked';
+        }]);
+
+        $app['router']->post('api/test', ['uses' => function () {
+            return 'api test';
+        }]);
+
+        $app['router']->post('other/test', ['uses' => function () {
+            return 'other test';
+        }]);
     }
 
     /**
-     * @param $view
+     * @param  $view
      * @param  array  $parameters
      * @return string
      */
