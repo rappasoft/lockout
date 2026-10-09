@@ -52,7 +52,7 @@ APP_READ_ONLY=true
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11.x or 12.x
+- Laravel 11.x, 12.x, or 13.x (Laravel 13 requires PHP 8.3+)
 
 ## Documentation
 

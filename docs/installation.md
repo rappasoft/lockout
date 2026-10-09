@@ -20,7 +20,7 @@ composer require rappasoft/lockout
 | 10.x    | 5.x     |
 | 11.x    | 6.x     |
 | 12.x    | 6.x     |
-| 13.x    | 6.x     |
+| 13.x    | 6.1+    |
 
 Lockout 6 requires PHP 8.2 or higher. Laravel 13 requires PHP 8.3 or higher.
 

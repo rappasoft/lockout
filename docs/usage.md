@@ -304,7 +304,7 @@ php artisan lockout:enable
 ```
 
 Options:
-- `--clear-cache` - Clear the lockout cache after enabling
+- `--clear-cache` - Accepted for existing scripts; the lockout cache is always cleared
 
 ### Disable Lockout
 
@@ -313,7 +313,7 @@ php artisan lockout:disable
 ```
 
 Options:
-- `--clear-cache` - Clear the lockout cache after disabling
+- `--clear-cache` - Accepted for existing scripts; the lockout cache is always cleared
 
 ### Check Status
 
