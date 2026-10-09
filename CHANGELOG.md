@@ -4,6 +4,22 @@ All notable changes to `lockout` will be documented in this file
 
 ## [Unreleased]
 
+### Added
+- Laravel 13 compatibility while retaining Laravel 11 and 12 support.
+- IPv6 CIDR matching using Symfony's existing IP utilities.
+
+### Fixed
+- Load and publish the bundled maintenance view from the package resources directory.
+- Match route whitelist patterns literally except for `*` wildcards.
+- Resolve named routes and API middleware before global middleware dispatch.
+- Reject malformed CIDR masks instead of crashing or widening whitelist access.
+- Make enable/disable commands update the active environment file atomically, preserve file permissions, fail on persistence errors, and clear stale configuration and status caches.
+
+### Changed
+- Use patched PHPUnit 11–13 releases and PHPUnit test attributes.
+- Test every supported Laravel version with PHP 8.2–8.5 in CI, and audit dependencies.
+- Retain Laravel 11 compatibility tests with a CI-only exception for its unpatched framework advisory; recommend patched Laravel 12 or 13 for production.
+
 ## [6.0.0] - 2025-01-XX
 
 ### Added

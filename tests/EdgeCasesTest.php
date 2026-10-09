@@ -2,12 +2,14 @@
 
 namespace Rappasoft\Lockout\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 class EdgeCasesTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function ip_whitelist_from_env_variable_works()
     {
         config(['lockout.enabled' => true]);
@@ -24,7 +26,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function ip_whitelist_combines_env_and_array()
     {
         config(['lockout.enabled' => true]);
@@ -41,7 +43,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function ip_blacklist_from_env_variable_works()
     {
         config(['lockout.enabled' => false]);
@@ -53,21 +55,20 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function route_name_matching_works()
     {
         config(['lockout.enabled' => true]);
         config(['lockout.locked_types' => ['post']]);
         config(['lockout.route_names' => ['test.route']]);
 
-        // Route name matching requires Route::current() to work
-        // In testbench, this can be tricky, so we test the config is read correctly
-        // The actual route matching is tested in integration scenarios
-        $routeNames = config('lockout.route_names', []);
-        $this->assertContains('test.route', $routeNames);
+        Route::post('named-route', fn () => 'allowed')->name('test.route');
+
+        $this->call('POST', 'named-route')->assertOk()->assertSee('allowed');
+        $this->call('POST', 'post')->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function route_name_matching_returns_false_when_no_route()
     {
         config(['lockout.enabled' => true]);
@@ -79,7 +80,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function route_name_matching_returns_false_when_route_has_no_name()
     {
         config(['lockout.enabled' => true]);
@@ -94,7 +95,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function multiple_route_patterns_work()
     {
         config(['lockout.enabled' => true]);
@@ -119,7 +120,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function route_pattern_with_complex_wildcards()
     {
         config(['lockout.enabled' => true]);
@@ -141,7 +142,17 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    public function testRoutePatternTreatsRegexCharactersLiterally()
+    {
+        config(['lockout.enabled' => true, 'lockout.route_patterns' => ['reports/v1.0/*']]);
+        Route::post('reports/v1.0/export', fn () => 'allowed');
+        Route::post('reports/v1x0/export', fn () => 'blocked');
+
+        $this->call('POST', 'reports/v1.0/export')->assertOk();
+        $this->call('POST', 'reports/v1x0/export')->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    #[Test]
     public function custom_health_check_path_configuration_works()
     {
         // Test that custom health check path configuration is respected
@@ -157,7 +168,7 @@ class EdgeCasesTest extends TestCase
         // This test verifies the configuration is properly stored and retrieved
     }
 
-    /** @test */
+    #[Test]
     public function api_detection_by_path_works()
     {
         config(['lockout.enabled' => true]);
@@ -170,7 +181,17 @@ class EdgeCasesTest extends TestCase
             ->assertJsonStructure(['message', 'status']);
     }
 
-    /** @test */
+    public function testApiMiddlewareIsDetectedBeforeRouteDispatch()
+    {
+        config(['lockout.enabled' => true]);
+        Route::post('service', fn () => 'blocked')->middleware('api');
+
+        $this->call('POST', 'service')
+            ->assertStatus(Response::HTTP_UNAUTHORIZED)
+            ->assertJsonStructure(['message', 'status']);
+    }
+
+    #[Test]
     public function api_detection_when_disabled()
     {
         config(['lockout.enabled' => true]);
@@ -182,7 +203,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function api_response_type_abort_works()
     {
         config(['lockout.enabled' => true]);
@@ -195,7 +216,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function custom_response_code_works()
     {
         config(['lockout.enabled' => true]);
@@ -206,7 +227,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(503);
     }
 
-    /** @test */
+    #[Test]
     public function custom_response_message_works()
     {
         config(['lockout.enabled' => true]);
@@ -219,7 +240,7 @@ class EdgeCasesTest extends TestCase
             ->assertJson(['message' => 'Custom maintenance message']);
     }
 
-    /** @test */
+    #[Test]
     public function whitelist_method_case_insensitive()
     {
         config(['lockout.enabled' => true]);
@@ -236,7 +257,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function locked_types_case_insensitive()
     {
         config(['lockout.enabled' => true]);
@@ -249,7 +270,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function cache_key_customization_works()
     {
         config(['lockout.enabled' => true]);
@@ -262,7 +283,7 @@ class EdgeCasesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function cache_ttl_customization_works()
     {
         config(['lockout.enabled' => true]);

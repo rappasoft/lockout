@@ -2,6 +2,8 @@
 
 namespace Rappasoft\Lockout\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
+
 use Illuminate\Http\Response;
 
 /**
@@ -9,7 +11,7 @@ use Illuminate\Http\Response;
  */
 class RequestTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function get_requests_can_be_accessed_with_the_plugin_off()
     {
         config(['lockout.enabled' => false]);
@@ -20,7 +22,7 @@ class RequestTest extends TestCase
         $this->assertEquals('got', $crawler->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function get_requests_cannot_be_accessed_with_the_plugin_on()
     {
         config(['lockout.enabled' => true]);
@@ -30,7 +32,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function post_requests_can_be_accessed_with_the_plugin_off()
     {
         config(['lockout.enabled' => false]);
@@ -41,7 +43,7 @@ class RequestTest extends TestCase
         $this->assertEquals('posted', $crawler->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function post_requests_cannot_be_accessed_with_the_plugin_on()
     {
         config(['lockout.enabled' => true]);
@@ -51,7 +53,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function put_requests_can_be_accessed_with_the_plugin_off()
     {
         config(['lockout.enabled' => false]);
@@ -62,7 +64,7 @@ class RequestTest extends TestCase
         $this->assertEquals('placed', $crawler->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function put_requests_cannot_be_accessed_with_the_plugin_on()
     {
         config(['lockout.enabled' => true]);
@@ -72,7 +74,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function patch_requests_can_be_accessed_with_the_plugin_off()
     {
         config(['lockout.enabled' => false]);
@@ -83,7 +85,7 @@ class RequestTest extends TestCase
         $this->assertEquals('patched', $crawler->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function patch_requests_cannot_be_accessed_with_the_plugin_on()
     {
         config(['lockout.enabled' => true]);
@@ -93,7 +95,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function delete_requests_can_be_accessed_with_the_plugin_off()
     {
         config(['lockout.enabled' => false]);
@@ -104,7 +106,7 @@ class RequestTest extends TestCase
         $this->assertEquals('deleted', $crawler->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function deleted_requests_cannot_be_accessed_with_the_plugin_on()
     {
         config(['lockout.enabled' => true]);
@@ -159,7 +161,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function multiple_whitelist_entries_work_correctly()
     {
         config(['lockout.enabled' => true]);
@@ -179,7 +181,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function post_requests_to_non_login_paths_are_blocked_when_allow_login_is_true()
     {
         config(['lockout.enabled' => true]);
@@ -196,7 +198,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function post_requests_are_blocked_when_allow_login_is_false()
     {
         config(['lockout.enabled' => true]);
@@ -210,7 +212,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function get_requests_not_in_pages_array_are_allowed()
     {
         config(['lockout.enabled' => true]);
@@ -224,7 +226,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function multiple_pages_in_pages_array_are_blocked()
     {
         config(['lockout.enabled' => true]);
@@ -241,7 +243,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function empty_whitelist_does_not_break_middleware()
     {
         config(['lockout.enabled' => true]);
@@ -252,7 +254,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function empty_locked_types_allows_all_methods_except_pages()
     {
         config(['lockout.enabled' => true]);
@@ -269,7 +271,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function whitelist_takes_precedence_over_locked_types()
     {
         config(['lockout.enabled' => true]);
@@ -292,7 +294,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function custom_login_and_logout_paths_work()
     {
         config(['lockout.enabled' => true]);
@@ -314,7 +316,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function get_requests_work_when_not_in_pages_array_and_locked_types_empty()
     {
         config(['lockout.enabled' => true]);
@@ -328,7 +330,7 @@ class RequestTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function pages_array_with_non_array_value_is_handled_gracefully()
     {
         config(['lockout.enabled' => true]);

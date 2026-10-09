@@ -2,12 +2,14 @@
 
 namespace Rappasoft\Lockout\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
 
 class RoleBasedTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function user_with_role_attribute_bypasses_lockout()
     {
         config(['lockout.enabled' => true]);
@@ -24,7 +26,7 @@ class RoleBasedTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function user_without_allowed_role_is_blocked()
     {
         config(['lockout.enabled' => true]);
@@ -41,7 +43,7 @@ class RoleBasedTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function user_with_hasRole_method_bypasses_lockout()
     {
         config(['lockout.enabled' => true]);
@@ -61,7 +63,7 @@ class RoleBasedTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function unauthenticated_user_is_blocked()
     {
         config(['lockout.enabled' => true]);
@@ -72,7 +74,7 @@ class RoleBasedTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function multiple_allowed_roles_work()
     {
         config(['lockout.enabled' => true]);
@@ -107,7 +109,7 @@ class RoleBasedTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function empty_allowed_roles_blocks_everyone()
     {
         config(['lockout.enabled' => true]);

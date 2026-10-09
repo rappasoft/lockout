@@ -2,10 +2,13 @@
 
 namespace Rappasoft\Lockout\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Rappasoft\Lockout\Events\RequestBlocked;
+use Rappasoft\Lockout\LockoutServiceProvider;
 
 class AdvancedFeaturesTest extends TestCase
 {
@@ -16,7 +19,7 @@ class AdvancedFeaturesTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
+    #[Test]
     public function ip_whitelist_allows_access()
     {
         config(['lockout.enabled' => true]);
@@ -28,7 +31,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
     }
 
-    /** @test */
+    #[Test]
     public function ip_whitelist_blocks_other_ips()
     {
         config(['lockout.enabled' => true]);
@@ -40,7 +43,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function ip_whitelist_supports_cidr_notation()
     {
         config(['lockout.enabled' => true]);
@@ -56,7 +59,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function ip_blacklist_blocks_even_when_lockout_disabled()
     {
         config(['lockout.enabled' => false]);
@@ -67,7 +70,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function health_check_endpoint_is_always_accessible()
     {
         config(['lockout.enabled' => true]);
@@ -80,7 +83,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertJsonStructure(['status', 'timestamp', 'lockout_enabled']);
     }
 
-    /** @test */
+    #[Test]
     public function health_check_can_be_disabled()
     {
         config(['lockout.enabled' => true]);
@@ -92,7 +95,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function route_patterns_whitelist_routes()
     {
         config(['lockout.enabled' => true]);
@@ -106,7 +109,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function api_requests_return_json_response()
     {
         config(['lockout.enabled' => true]);
@@ -124,7 +127,7 @@ class AdvancedFeaturesTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function view_response_type_returns_view()
     {
         config(['lockout.enabled' => true]);
@@ -132,15 +135,21 @@ class AdvancedFeaturesTest extends TestCase
         config(['lockout.response_type' => 'view']);
         config(['lockout.response_view' => 'lockout::maintenance']);
 
-        // View might not exist in test environment, so test with json instead
-        config(['lockout.response_type' => 'json']);
-
         $response = $this->call('POST', 'post');
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
-        $response->assertJson(['message' => 'Application is currently in read-only mode.']);
+        $response->assertSee('Application in Read-Only Mode');
+        $response->assertSee('Application is currently in read-only mode.');
     }
 
-    /** @test */
+    public function testBundledViewPublishPathExists()
+    {
+        $paths = LockoutServiceProvider::pathsToPublish(LockoutServiceProvider::class, 'lockout-views');
+        $this->assertCount(1, $paths);
+        $this->assertFileExists(array_key_first($paths).'/maintenance.blade.php');
+        $this->assertSame(resource_path('views/vendor/lockout'), reset($paths));
+    }
+
+    #[Test]
     public function json_response_type_returns_json()
     {
         config(['lockout.enabled' => true]);
@@ -152,7 +161,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertJson(['message' => 'Application is currently in read-only mode.']);
     }
 
-    /** @test */
+    #[Test]
     public function cache_is_used_when_enabled()
     {
         config(['lockout.enabled' => true]);
@@ -168,7 +177,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function cache_is_bypassed_when_disabled()
     {
         config(['lockout.enabled' => true]);
@@ -180,7 +189,7 @@ class AdvancedFeaturesTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    /** @test */
+    #[Test]
     public function request_blocked_event_is_fired()
     {
         config(['lockout.enabled' => true]);
@@ -196,7 +205,7 @@ class AdvancedFeaturesTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function events_are_not_fired_when_disabled()
     {
         config(['lockout.enabled' => true]);

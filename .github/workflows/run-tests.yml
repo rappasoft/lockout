@@ -13,19 +13,25 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [8.2, 8.3]
+        php: ['8.2', '8.3', '8.4', '8.5']
+        laravel: ['11.*', '12.*', '13.*']
+        exclude:
+          - php: '8.2'
+            laravel: '13.*'
         include:
           - laravel: 11.*
             testbench: ^9.0
           - laravel: 12.*
             testbench: ^10.0
+          - laravel: 13.*
+            testbench: ^11.0
         stability: [prefer-stable]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -40,9 +46,17 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install dependencies
+        shell: bash
         run: |
+          composer validate --strict
+          if [ "${{ matrix.laravel }}" = "11.*" ]; then
+            composer config --json policy.advisories.ignore-id '{"PKSA-d5tc-s1qs-h781": "Laravel 11 compatibility tests only; production apps should use patched Laravel 12 or 13.", "PKSA-m5cs-t1y6-qpcs": "Laravel 11 compatibility tests only; production apps should use patched Laravel 12 or 13.", "PKSA-3r5d-mb8f-1qw9": "Laravel 11 compatibility tests only; production apps should use patched Laravel 12 or 13.", "PKSA-mdq4-51ck-6kdq": "Laravel 11 compatibility tests only; production apps should use patched Laravel 12 or 13."}'
+          fi
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
+      - name: Audit dependencies
+        run: composer audit
+
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --fail-on-warning --fail-on-risky --fail-on-phpunit-deprecation

@@ -5,11 +5,14 @@ namespace Rappasoft\Lockout\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Rappasoft\Lockout\Events\RequestBlocked;
 use Rappasoft\Lockout\Helpers\IpHelper;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class CheckForReadOnlyMode.
@@ -203,25 +206,7 @@ class CheckForReadOnlyMode
      */
     protected function matchesRoutePattern(Request $request): bool
     {
-        $patterns = config('lockout.route_patterns', []);
-
-        if (empty($patterns)) {
-            return false;
-        }
-
-        $path = $request->path();
-
-        foreach ($patterns as $pattern) {
-            // Convert wildcard pattern to regex
-            $regex = str_replace(['*', '/'], ['.*', '\/'], $pattern);
-            $regex = '/^'.$regex.'$/';
-
-            if (preg_match($regex, $path)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $request->is(config('lockout.route_patterns', []));
     }
 
     /**
@@ -235,7 +220,7 @@ class CheckForReadOnlyMode
             return false;
         }
 
-        $route = Route::current();
+        $route = $this->resolveRoute($request);
 
         if (! $route) {
             return false;
@@ -244,6 +229,16 @@ class CheckForReadOnlyMode
         $routeName = $route->getName();
 
         return $routeName && in_array($routeName, $routeNames, true);
+    }
+
+    protected function resolveRoute(Request $request): ?RoutingRoute
+    {
+        try {
+            // Global middleware runs before Laravel has matched the current route.
+            return $request->route() ?? Route::getRoutes()->match($request);
+        } catch (NotFoundHttpException|MethodNotAllowedHttpException) {
+            return null;
+        }
     }
 
     /**
@@ -306,7 +301,7 @@ class CheckForReadOnlyMode
         }
 
         // Check if route is in api middleware group
-        $route = Route::current();
+        $route = $this->resolveRoute($request);
         if ($route && in_array('api', $route->middleware(), true)) {
             return true;
         }
