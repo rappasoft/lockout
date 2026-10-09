@@ -2,6 +2,8 @@
 
 namespace Rappasoft\Lockout\Helpers;
 
+use Symfony\Component\HttpFoundation\IpUtils;
+
 class IpHelper
 {
     /**
@@ -45,17 +47,12 @@ class IpHelper
      */
     protected static function ipMatches(string $ip, string $pattern): bool
     {
-        // Exact match
-        if ($ip === $pattern) {
-            return true;
-        }
-
         // CIDR notation support
         if (str_contains($pattern, '/')) {
             return self::ipInCidr($ip, $pattern);
         }
 
-        return false;
+        return IpUtils::checkIp($ip, $pattern);
     }
 
     /**
@@ -63,18 +60,12 @@ class IpHelper
      */
     protected static function ipInCidr(string $ip, string $cidr): bool
     {
-        [$subnet, $mask] = explode('/', $cidr);
-
-        $ipLong = ip2long($ip);
-        $subnetLong = ip2long($subnet);
-
-        if ($ipLong === false || $subnetLong === false) {
+        $mask = explode('/', $cidr, 2)[1];
+        if (! ctype_digit($mask)) {
             return false;
         }
 
-        $maskLong = -1 << (32 - (int) $mask);
-
-        return ($ipLong & $maskLong) === ($subnetLong & $maskLong);
+        return IpUtils::checkIp($ip, $cidr);
     }
 
     /**

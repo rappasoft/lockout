@@ -4,6 +4,29 @@ All notable changes to `lockout` will be documented in this file
 
 ## [Unreleased]
 
+## [6.1.0] - 2026-10-09
+
+### Added
+- Laravel 13 compatibility while retaining Laravel 11 and 12 support.
+- IPv6 CIDR matching using Symfony's existing IP utilities.
+
+### Fixed
+- Load and publish the bundled maintenance view from the package resources directory.
+- Match route whitelist patterns literally except for `*` wildcards.
+- Resolve named routes and API middleware before global middleware dispatch.
+- Reject malformed CIDR masks instead of crashing or widening whitelist access.
+- Make enable/disable commands update the active environment file atomically, preserve file permissions, fail on persistence errors, and clear stale configuration and status caches.
+
+### Changed
+- Use patched PHPUnit 11–13 releases and PHPUnit test attributes.
+- Test every supported Laravel version with PHP 8.2–8.5 in CI, and audit dependencies.
+- Retain Laravel 11 compatibility tests with CI-only exceptions for four known unpatched framework advisories; recommend patched Laravel 12 or 13 for production.
+
+### Compatibility
+- Requires PHP 8.2 or higher with Laravel 11 or 12, or PHP 8.3 or higher with Laravel 13; tested through PHP 8.5.
+- Laravel 11 has reached the end of security support. Its compatibility tests allow only `PKSA-d5tc-s1qs-h781`, `PKSA-m5cs-t1y6-qpcs`, `PKSA-3r5d-mb8f-1qw9`, and `PKSA-mdq4-51ck-6kdq` in CI. The package does not change application security policy.
+- Enable/disable commands now clear configuration and lockout status caches automatically. Rebuild cached configuration if your deployment uses it, and restart long-running workers or Octane processes. `--clear-cache` remains accepted for existing scripts.
+
 ## [6.0.0] - 2025-01-XX
 
 ### Added
@@ -61,10 +84,11 @@ All notable changes to `lockout` will be documented in this file
 
 - Initial release
 
-[Unreleased]: https://github.com/rappasoft/laravel-boilerplate/compare/v5.0.0...develop
-[5.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v4.0.0...v5.0.0
-[4.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v3.0.1...v4.0.0
-[3.0.1]: https://github.com/rappasoft/laravel-boilerplate/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v2.0.0...v3.0.0
-[2.0.0]: https://github.com/rappasoft/laravel-boilerplate/compare/v1.0.1...v2.0.0
-[1.0.1]: https://github.com/rappasoft/laravel-boilerplate/compare/v1.0.0...v1.0.1
+[Unreleased]: https://github.com/rappasoft/lockout/compare/v6.1.0...master
+[6.1.0]: https://github.com/rappasoft/lockout/compare/v6.0.0...v6.1.0
+[6.0.0]: https://github.com/rappasoft/lockout/compare/v5.0.0...v6.0.0
+[5.0.0]: https://github.com/rappasoft/lockout/compare/v4.0.0...v5.0.0
+[4.0.0]: https://github.com/rappasoft/lockout/compare/v3.0.1...v4.0.0
+[3.0.1]: https://github.com/rappasoft/lockout/compare/v3.0...v3.0.1
+[3.0.0]: https://github.com/rappasoft/lockout/compare/v2.1...v3.0
+[2.0.0]: https://github.com/rappasoft/lockout/compare/v1.0...v2.0

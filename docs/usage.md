@@ -70,6 +70,8 @@ Allow specific routes to bypass lockout:
 
 Allow specific IP addresses to bypass lockout completely:
 
+IPv4 and IPv6 addresses and CIDR ranges are supported. Malformed CIDR masks are ignored.
+
 **Via .env:**
 ```bash
 LOCKOUT_IP_WHITELIST=127.0.0.1,192.168.1.100
@@ -166,6 +168,8 @@ Automatically detect and handle API requests differently:
 
 Whitelist routes by pattern:
 
+`*` matches any path characters. Other characters, including dots, are matched literally.
+
 ```php
 'route_patterns' => [
     'api/*',           // All API routes
@@ -177,6 +181,8 @@ Whitelist routes by pattern:
 #### Route Names
 
 Whitelist routes by name:
+
+Names are matched against the route for the current request, including when Lockout runs as global middleware.
 
 ```php
 'route_names' => [
@@ -234,6 +240,8 @@ php artisan cache:clear
 
 Or when enabling/disabling:
 
+The enable and disable commands automatically clear the lockout status cache. `--clear-cache` remains accepted for existing scripts.
+
 ```bash
 php artisan lockout:enable --clear-cache
 php artisan lockout:disable --clear-cache
@@ -287,6 +295,8 @@ Disable events:
 
 ## Artisan Commands
 
+These commands update the application's active environment file, preserve its file permissions, and clear any cached Laravel configuration. They fail if the environment file is missing or cannot be updated. Run `php artisan config:cache` afterwards if your deployment uses cached configuration, and restart long-running workers or Octane processes so they reload the setting. If your deployment supplies `APP_READ_ONLY` through external environment variables, update that setting through your deployment instead.
+
 ### Enable Lockout
 
 ```bash
@@ -294,7 +304,7 @@ php artisan lockout:enable
 ```
 
 Options:
-- `--clear-cache` - Clear the lockout cache after enabling
+- `--clear-cache` - Accepted for existing scripts; the lockout cache is always cleared
 
 ### Disable Lockout
 
@@ -303,7 +313,7 @@ php artisan lockout:disable
 ```
 
 Options:
-- `--clear-cache` - Clear the lockout cache after disabling
+- `--clear-cache` - Accepted for existing scripts; the lockout cache is always cleared
 
 ### Check Status
 

@@ -27,7 +27,7 @@ class LockoutServiceProvider extends ServiceProvider
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../../resources/views' => resource_path('views/vendor/lockout'),
+                __DIR__.'/../resources/views' => resource_path('views/vendor/lockout'),
             ], 'lockout-views');
         }
 
@@ -44,7 +44,7 @@ class LockoutServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/lockout.php', 'lockout');
 
         // Register views
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'lockout');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'lockout');
 
         // Register commands
         if ($this->app->runningInConsole()) {

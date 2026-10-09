@@ -4,6 +4,7 @@ namespace Rappasoft\Lockout\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Rappasoft\Lockout\Events\LockoutEnabled;
 
 class LockoutEnable extends Command
@@ -28,10 +29,16 @@ class LockoutEnable extends Command
     public function handle(): int
     {
         // Update .env file
-        $envFile = base_path('.env');
+        $envFile = $this->laravel->environmentFilePath();
 
-        if (file_exists($envFile)) {
-            $envContent = file_get_contents($envFile);
+        if (! is_file($envFile)) {
+            $this->error('The application environment file does not exist.');
+
+            return Command::FAILURE;
+        }
+
+        try {
+            $envContent = File::get($envFile);
 
             // Update or add APP_READ_ONLY
             if (preg_match('/^APP_READ_ONLY=(.*)$/m', $envContent)) {
@@ -40,22 +47,31 @@ class LockoutEnable extends Command
                 $envContent .= "\nAPP_READ_ONLY=true\n";
             }
 
-            file_put_contents($envFile, $envContent);
+            File::replace($envFile, $envContent, fileperms($envFile) & 0777);
+
+            if (is_file($this->laravel->getCachedConfigPath())) {
+                $this->callSilent('config:clear');
+                if (is_file($this->laravel->getCachedConfigPath())) {
+                    throw new \RuntimeException('The configuration cache could not be cleared.');
+                }
+            }
+        } catch (\Throwable $exception) {
+            $this->error('Unable to enable lockout: '.$exception->getMessage());
+
+            return Command::FAILURE;
         }
 
-        // Clear cache if requested
+        Cache::forget(config('lockout.cache_key', 'lockout.status'));
         if ($this->option('clear-cache')) {
-            Cache::forget(config('lockout.cache_key', 'lockout.status'));
             $this->info('Lockout cache cleared.');
         }
+
+        config(['lockout.enabled' => true]);
 
         // Fire event
         if (config('lockout.fire_events', true)) {
             event(new LockoutEnabled());
         }
-
-        // Reload config
-        config(['lockout.enabled' => true]);
 
         $this->info('Application lockout has been enabled.');
 
