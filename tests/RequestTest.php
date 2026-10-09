@@ -2,9 +2,8 @@
 
 namespace Rappasoft\Lockout\Tests;
 
-use PHPUnit\Framework\Attributes\Test;
-
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Class RequestTest.

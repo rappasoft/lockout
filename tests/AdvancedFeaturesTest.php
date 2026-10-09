@@ -2,11 +2,10 @@
 
 namespace Rappasoft\Lockout\Tests;
 
-use PHPUnit\Framework\Attributes\Test;
-
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Test;
 use Rappasoft\Lockout\Events\RequestBlocked;
 use Rappasoft\Lockout\LockoutServiceProvider;
 

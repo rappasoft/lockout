@@ -33,6 +33,7 @@ class LockoutEnable extends Command
 
         if (! is_file($envFile)) {
             $this->error('The application environment file does not exist.');
+
             return Command::FAILURE;
         }
 
@@ -56,6 +57,7 @@ class LockoutEnable extends Command
             }
         } catch (\Throwable $exception) {
             $this->error('Unable to enable lockout: '.$exception->getMessage());
+
             return Command::FAILURE;
         }
 

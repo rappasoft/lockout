@@ -2,10 +2,9 @@
 
 namespace Rappasoft\Lockout\Tests;
 
-use PHPUnit\Framework\Attributes\Test;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 
 class RoleBasedTest extends TestCase
 {
