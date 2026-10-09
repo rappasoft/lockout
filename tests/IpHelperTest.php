@@ -3,7 +3,6 @@
 namespace Rappasoft\Lockout\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
-
 use Rappasoft\Lockout\Helpers\IpHelper;
 
 class IpHelperTest extends TestCase

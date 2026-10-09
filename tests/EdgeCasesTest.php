@@ -2,10 +2,9 @@
 
 namespace Rappasoft\Lockout\Tests;
 
-use PHPUnit\Framework\Attributes\Test;
-
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 
 class EdgeCasesTest extends TestCase
 {
